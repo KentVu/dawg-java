@@ -1,10 +1,9 @@
-##About
+## About
 **DAWG** (Directed Acyclic Word Graph) is a **Java library** capable of constructing character-sequence-storing, directed acyclic graphs of minimal size.
 
 This is a new version of a [MDAG](https://github.com/klawson88/MDAG) library initially started by [Kevin Lawson](https://github.com/klawson88). This fork was renamed to simplify googling.
 
-The library is small, deceptively simple, fast and powerful. It differs from other libraries capable of creating minimal directed acyclic graphs
-(also known as **MAFSA** (Minimal Acyclic Finite State Automaton), **MDAG** (Minimalistic Directed Acyclic Graph), **DAWG** ([Directed Acyclic Word Graph](https://en.wikipedia.org/wiki/Directed_acyclic_word_graph)) or **DAFSA** ([Deterministic Acyclic Finite State Automaton](https://en.wikipedia.org/wiki/Deterministic_acyclic_finite_state_automaton))) in the following ways:
+The library is small, deceptively simple, fast and powerful. It differs from other libraries capable of creating minimal directed acyclic graphs (also known as **MAFSA** (Minimal Acyclic Finite State Automaton), **MDAG** (Minimalistic Directed Acyclic Graph), **DAWG** ([Directed Acyclic Word Graph](https://en.wikipedia.org/wiki/Directed_acyclic_word_graph)) or **DAFSA** ([Deterministic Acyclic Finite State Automaton](https://en.wikipedia.org/wiki/Deterministic_acyclic_finite_state_automaton))) in the following ways:
 
 - Graphs are constructed directly from input (instead of from a preliminarily constructed trie)
 - Graphs can be constructed from unsorted input
@@ -41,7 +40,7 @@ Requirements:
 - No additional runtime dependencies
 - JUnit (for tests)
 
-##How to use
+## How to use
 
 ```java
 ModifiableDAWGSet dawg = new ModifiableDAWGSet();
@@ -93,18 +92,13 @@ Further plans:
 - Add API documentation, internal structure description, usage examples and javadoc
 - Add benchmarks and features comparison with other data structures
 
-##Licensing and usage information
+## Licensing and usage information
 
 MDAG is licensed under the Apache License, Version 2.0.
 
 [Original repository](https://github.com/klawson88/MDAG)
 
-##Reference material
+## Reference material
 
-- Incremental Construction of Minimal Acyclic Finite-State Automata (2000) by Jan Daciuk , Stoyan Mihov , Bruce W. Watson , Richard E. Watson
-  (http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.7600)
-  (Presented algorithms used as bases for MDAG construction and manipulation algorithms)
-  
-- Programming Abstractions (Lecture 25)- Julie Zelinsky (Stanford University)
-  (http://www.youtube.com/watch?v=TJ8SkcUSdbU)
-  (Presented size reduction process used as basis for MDAG simplification algorithm)
+- [Incremental Construction of Minimal Acyclic Finite-State Automata](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.37.7600) (2000) by Jan Daciuk, Stoyan Mihov, Bruce W. Watson, Richard E. Watson (presented algorithms used as bases for MDAG construction and manipulation algorithms)
+- [Programming Abstractions (Lecture 25)](http://www.youtube.com/watch?v=TJ8SkcUSdbU) - Julie Zelinsky (Stanford University) (presented size reduction process used as basis for MDAG simplification algorithm)
