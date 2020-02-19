@@ -8,7 +8,7 @@ plugins {
     id 'cpp-library'
 }
 
-group 'org.kentvu'
+group 'kentvu.dawgjava'
 version = '0.0.1'
 
 library {
