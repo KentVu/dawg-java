@@ -33,5 +33,6 @@ tags
 /.idea
 /.gradle
 /build
-/hello/build
+/dawg-java/build
 *.iml
+local.properties

@@ -18,6 +18,11 @@ dependencies {
 
 test {
     systemProperty "java.library.path", file("${project(":dawg-java").buildDir}/lib/main/debug").absolutePath
+    // https://stackoverflow.com/a/41107537/1562087
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
 }
 
 test.dependsOn  ':dawg-java:linkDebug'

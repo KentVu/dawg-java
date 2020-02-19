@@ -25,13 +25,13 @@ library {
             compileTask.includes.from("${Jvm.current().javaHome}/include/win32")
         }
 
-        compileTask.source.from fileTree(dir: "src/main/cpp", include: "**/*.c")
+        compileTask.source.from fileTree(dir: "src/main/cpp", include: "**/*.cpp")
 
         def toolChain = binary.toolChain
         if (toolChain instanceof VisualCpp) {
             compileTask.compilerArgs.addAll(["/TC"])
         } else if (toolChain instanceof GccCompatibleToolChain) {
-            compileTask.compilerArgs.addAll(["-x", "c", "-std=c11"])
+            compileTask.compilerArgs.addAll(["-std=c++11", "-fPIC"])
         }
     }
 }
