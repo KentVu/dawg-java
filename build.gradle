@@ -17,7 +17,7 @@ dependencies {
 
 
 test {
-    systemProperty "java.library.path", file("${project(":dawg-java").buildDir}/lib/main/debug").absolutePath
+    systemProperty "java.library.path", file("${project(":dawg-jni").buildDir}/lib/main/debug").absolutePath
     // https://stackoverflow.com/a/41107537/1562087
     testLogging {
         outputs.upToDateWhen {false}
@@ -25,4 +25,4 @@ test {
     }
 }
 
-test.dependsOn  ':dawg-java:linkDebug'
+test.dependsOn  ':dawg-jni:linkDebug'
