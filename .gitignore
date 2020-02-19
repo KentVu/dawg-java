@@ -32,7 +32,6 @@ tags
 # IDEA Default ignored files
 /.idea
 /.gradle
-/build
-/dawg-jni/build
+build/
 *.iml
 local.properties

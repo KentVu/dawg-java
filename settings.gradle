@@ -1,2 +1,3 @@
-rootProject.name = 'dawg-jni'
+rootProject.name = 'dawg-java'
 include 'dawg-jni'
+include 'dawg-java'
