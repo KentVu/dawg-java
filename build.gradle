@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'org.kentvu'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+test {
+    systemProperty "java.library.path", file("${project(":dawg-java").buildDir}/lib/main/debug").absolutePath
+    // https://stackoverflow.com/a/41107537/1562087
+    testLogging {
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+    }
+}
+
+test.dependsOn  ':dawg-java:linkDebug'
