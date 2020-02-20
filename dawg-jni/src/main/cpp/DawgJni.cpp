@@ -18,7 +18,7 @@ using std::ios;
  * Method:    sayHello
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_kentvu_dawgjava_JniDawg_saveDawg
+JNIEXPORT void JNICALL Java_kentvu_dawgjava_DawgTrie_saveDawg
   (JNIEnv *env, jobject thisObj, jstring arg)
 {
     string filename = ToString(env, arg);
