@@ -28,8 +28,7 @@ class DawgTrie: Trie {
     }
 
     private val words = sortedSetOf<String>()
-
-    override suspend fun build(seed: Sequence<String>, progressListener: Channel<Int>?) {
+    override suspend fun build(seed: WordSequence, progressListener: Channel<Int>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
