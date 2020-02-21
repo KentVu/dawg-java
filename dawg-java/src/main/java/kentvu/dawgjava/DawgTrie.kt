@@ -9,7 +9,7 @@ class DawgTrie: Trie {
             System.loadLibrary("dawg-jni")
         }
     }
-    external fun buildDawg(path: String, seed: WordSequence)
+    private external fun buildDawg(path: String, seed: WordSequence)
 
     fun insert(s: String) {
         words.add(s)

@@ -13,28 +13,26 @@
 
 using std::ios;
 
-JavaVM *gJvm;
+// JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved)
+// {
+//   	JNIEnv *env;
 
-jint JNI_OnLoad(JavaVM* vm, void* reserved)
-{
-  	JNIEnv *env;
+//     if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
+//         return JNI_ERR;
+//     }
+//     // Find your class. JNI_OnLoad is called from the correct class loader context for this to work.
+//     jclass c = env->FindClass("kentvu/dawgjava/DawgTrie");
+//     if (c == nullptr) return JNI_ERR;
 
-    if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
-        return JNI_ERR;
-    }
-    // Find your class. JNI_OnLoad is called from the correct class loader context for this to work.
-    jclass c = env->FindClass("kentvu/dawgjava/DawgTrie");
-    if (c == nullptr) return JNI_ERR;
+//     // Register your class' native methods.
+//     static const JNINativeMethod methods[] = {
+//         {"buildDawg", "(Ljava/lang/String;Lkentvu/dawgjava/WordSequence;)V", reinterpret_cast<void*>(Java_kentvu_dawgjava_DawgTrie_buildDawg)}
+//     };
+//     int rc = env->RegisterNatives(c, methods, sizeof(methods)/sizeof(JNINativeMethod));
+//     if (rc != JNI_OK) return rc;
 
-    // Register your class' native methods.
-    static const JNINativeMethod methods[] = {
-        {"buildDawg", "(Ljava/lang/String;Lkentvu/dawgjava/WordSequence;)V", reinterpret_cast<void*>(Java_kentvu_dawgjava_DawgTrie_buildDawg)}
-    };
-    int rc = env->RegisterNatives(c, methods, sizeof(methods)/sizeof(JNINativeMethod));
-    if (rc != JNI_OK) return rc;
-
-    return JNI_VERSION_1_6;
-}
+//     return JNI_VERSION_1_6;
+// }
 
 /*
  * Class:     HelloJNI
