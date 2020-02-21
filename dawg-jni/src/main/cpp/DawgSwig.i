@@ -6,8 +6,9 @@
 
 class DawgSwig
 {
-std::string filename;
-dawgdic::DawgBuilder dawg_builder;
+    std::string filename;
+    dawgdic::DawgBuilder dawg_builder;
+
 public:
     DawgSwig(char* filename): filename(filename) {
         //string tmp
@@ -31,7 +32,7 @@ public:
         dawgdic::DictionaryBuilder::Build(dawg, &dic);
 
         // Writes a dictionary into a file "test.dic".
-        std::ofstream dic_file(/* new std::string */(filename), std::ios::binary);
+        std::ofstream dic_file(/* new std::string*/(filename), std::ios::binary);
         dic.Write(&dic_file);
     }
 };
