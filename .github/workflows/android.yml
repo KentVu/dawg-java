@@ -13,5 +13,14 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Install SWIG
+      run: |
+        sudo apt-get -yqq install swig
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew --info build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      if: failure()
+      with:
+        name: test-result
+        path: dawg-java/build/reports/tests/test/

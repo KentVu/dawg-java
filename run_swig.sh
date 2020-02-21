@@ -17,4 +17,6 @@ if [[ "$1" = "cleanup" ]]; then
     exit
 fi
 
+mkdir -pv $outdir/$package
 swig -v -c++ -java -o $out_cpp_file -outdir $outdir/$package -package $package $infile
+

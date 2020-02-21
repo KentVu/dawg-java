@@ -31,26 +31,23 @@ test {
 }
 
 task cleanSwig(type: Exec) {
-    String[] arguments = ['cleanup']
     workingDir '..'
     ignoreExitValue true
-    executable './run_swig.sh'
-    args arguments
+    commandLine './run_swig.sh', 'cleanup'
 }
 
-task executeSwig(type: Exec, dependsOn: cleanSwig) {
+task executeSwig(type: Exec) {
     workingDir '..'
-    try {
-        commandLine './run_swig.sh'
-    } catch (Exception e) {
-        e.printStackTrace()
-    }
+    //ignoreExitValue true
+    commandLine './run_swig.sh'
 }
 
+compileKotlin.dependsOn executeSwig
+//preBuild.dependsOn executeSwig
+//build.dependsOn executeSwig
 //build.doFirst {
 //    executeSwig()
 //}
 
-//build.dependsOn executeSwig
-test.dependsOn executeSwig
+clean.dependsOn cleanSwig
 test.dependsOn ':dawg-jni:linkDebug'
