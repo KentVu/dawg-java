@@ -30,4 +30,14 @@ test {
     }
 }
 
-test.dependsOn  ':dawg-jni:linkDebug'
+// TODO make build task depend on this
+def executeSwig() {
+    String[] arguments = ['cleanup']
+    exec {
+        workingDir './'
+        executable './run_swig.sh'
+        //args arguments
+    }
+}
+
+test.dependsOn ':dawg-jni:linkDebug'

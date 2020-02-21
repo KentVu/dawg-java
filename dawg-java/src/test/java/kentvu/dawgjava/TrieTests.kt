@@ -32,21 +32,21 @@ Thailand
 Laos
 countries
 Venezuela"""
-            trie.build(s.wordSequence(), channel)
+            trie.build(content.lineSequence(), channel)
             withTimeout(100) {
                 job.await()
             }
         }
 
         "contains" {
-            trie.build(content.wordSequence())
+            //trie.build(content.lineSequence())
             trie.contains("a") shouldBe true
             trie.contains("b") shouldBe true
             trie.contains("c") shouldBe true
         }
 
         "find" {
-            trie.build(content.wordSequence())
+            //trie.build(content.lineSequence())
             val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
                 it.value shouldBe 0
             }

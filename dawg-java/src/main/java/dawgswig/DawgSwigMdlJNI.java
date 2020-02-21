@@ -9,6 +9,8 @@
 package dawgswig;
 
 public class DawgSwigMdlJNI {
-  public final static native long new_DawgSwig();
+  public final static native long new_DawgSwig(String jarg1);
+  public final static native void DawgSwig_Insert(long jarg1, DawgSwig jarg1_, String jarg2);
+  public final static native void DawgSwig_Finish(long jarg1, DawgSwig jarg1_);
   public final static native void delete_DawgSwig(long jarg1);
 }

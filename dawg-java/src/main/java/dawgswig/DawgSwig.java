@@ -36,8 +36,16 @@ public class DawgSwig {
     }
   }
 
-  public DawgSwig() {
-    this(DawgSwigMdlJNI.new_DawgSwig(), true);
+  public DawgSwig(String filename) {
+    this(DawgSwigMdlJNI.new_DawgSwig(filename), true);
+  }
+
+  public void Insert(String word) {
+    DawgSwigMdlJNI.DawgSwig_Insert(swigCPtr, this, word);
+  }
+
+  public void Finish() {
+    DawgSwigMdlJNI.DawgSwig_Finish(swigCPtr, this);
   }
 
 }

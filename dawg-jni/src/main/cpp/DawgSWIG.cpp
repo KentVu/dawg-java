@@ -233,14 +233,39 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 
 
 #include "DawgJni.h"
+#include <fstream>
+
 class DawgSwig
 {
+    std::string filename;
+    dawgdic::DawgBuilder dawg_builder;
 
 public:
-    DawgSwig() {
-        printf("new DawgSwig\n");
-    }
+    DawgSwig(char* filename): filename(filename) {
+        //string tmp
+        //DawgSwig::filename(filename);
+        printf("new DawgSwig for %s\n", filename);
 
+    }
+    void Insert(char* word) {
+        printf("Insert %s\n", word);
+        // Inserts keys into a simple dawg.
+        dawg_builder.Insert(word);
+    }
+    void Finish() {
+        printf("Finish()\n");
+        // Finishes building a simple dawg.
+        dawgdic::Dawg dawg;
+        dawg_builder.Finish(&dawg);
+
+        // Builds a dictionary from a simple dawg.
+        dawgdic::Dictionary dic;
+        dawgdic::DictionaryBuilder::Build(dawg, &dic);
+
+        // Writes a dictionary into a file "test.dic".
+        std::ofstream dic_file(/* new std::string */(filename), std::ios::binary);
+        dic.Write(&dic_file);
+    }
 };
 //DawgSwig newDawgSwig();
 
@@ -249,15 +274,51 @@ public:
 extern "C" {
 #endif
 
-SWIGEXPORT jlong JNICALL Java_dawgswig_DawgSwigMdlJNI_new_1DawgSwig(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_dawgswig_DawgSwigMdlJNI_new_1DawgSwig(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
+  char *arg1 = (char *) 0 ;
   DawgSwig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  result = (DawgSwig *)new DawgSwig();
+  arg1 = 0;
+  if (jarg1) {
+    arg1 = (char *)jenv->GetStringUTFChars(jarg1, 0);
+    if (!arg1) return 0;
+  }
+  result = (DawgSwig *)new DawgSwig(arg1);
   *(DawgSwig **)&jresult = result; 
+  if (arg1) jenv->ReleaseStringUTFChars(jarg1, (const char *)arg1);
   return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_dawgswig_DawgSwigMdlJNI_DawgSwig_1Insert(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  DawgSwig *arg1 = (DawgSwig *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(DawgSwig **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)jenv->GetStringUTFChars(jarg2, 0);
+    if (!arg2) return ;
+  }
+  (arg1)->Insert(arg2);
+  if (arg2) jenv->ReleaseStringUTFChars(jarg2, (const char *)arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_dawgswig_DawgSwigMdlJNI_DawgSwig_1Finish(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  DawgSwig *arg1 = (DawgSwig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(DawgSwig **)&jarg1; 
+  (arg1)->Finish();
 }
 
 
