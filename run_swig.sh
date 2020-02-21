@@ -1,7 +1,9 @@
 #!/bin/bash
 if ! which swig ; then
 	echo '[ERROR] Need SWIG!'
+	exit 1
 fi
+infile=dawg-jni/src/main/cpp/DawgSwig.i
 out_cpp_file=dawg-jni/src/main/cpp/DawgSWIG.cpp
 outdir=dawg-java/src/main/java
 package=dawgswig
@@ -14,4 +16,4 @@ if [[ "$1" = "cleanup" ]]; then
     exit
 fi
 
-swig -v -c++ -java -o $out_cpp_file -outdir $outdir/$package -package $package DawgSwig.i
+swig -v -c++ -java -o $out_cpp_file -outdir $outdir/$package -package $package $infile

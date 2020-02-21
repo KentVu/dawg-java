@@ -6,7 +6,10 @@
 //#include <iostream>
 
 #include "DawgJni.h"
+#include "dawgdic/dawg-builder.h"
 
-void buildDawg(char* filename) {
-    printf("TODO: buildDawg %s\n", filename);
-}
+// dawgdic::DawgBuilder newDawgBuilder() {
+//     printf("newDawgBuilder");
+//     dawgdic::DawgBuilder dawg_builder;
+//     return dawg_builder;
+// }

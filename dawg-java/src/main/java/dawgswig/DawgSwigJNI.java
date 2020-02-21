@@ -8,9 +8,6 @@
 
 package dawgswig;
 
-public class DawgdicSwig {
-  public static void buildDawg(String filename) {
-    DawgdicSwigJNI.buildDawg(filename);
-  }
-
+public class DawgSwigJNI {
+  public final static native long newDawgBuilder();
 }

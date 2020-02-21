@@ -16,7 +16,7 @@ class DawgTrie: Trie {
 
     private val words = sortedSetOf<String>()
     override suspend fun build(seed: WordSequence, progressListener: Channel<Int>?) {
-        dawgswig.DawgdicSwig.buildDawg("test.dawg")
+        val dawgSwig = dawgswig.DawgSwig()
     }
 
     override fun search(prefix: String): Map<String, Int> {

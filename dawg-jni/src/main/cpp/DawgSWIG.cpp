@@ -233,24 +233,41 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 
 
 #include "DawgJni.h"
+class DawgSwig
+{
+
+public:
+    DawgSwig() {
+        printf("new DawgSwig\n");
+    }
+
+};
+//DawgSwig newDawgSwig();
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-SWIGEXPORT void JNICALL Java_dawgswig_DawgdicSwigJNI_buildDawg(JNIEnv *jenv, jclass jcls, jstring jarg1) {
-  char *arg1 = (char *) 0 ;
+SWIGEXPORT jlong JNICALL Java_dawgswig_DawgSwigMdlJNI_new_1DawgSwig(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  DawgSwig *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = 0;
-  if (jarg1) {
-    arg1 = (char *)jenv->GetStringUTFChars(jarg1, 0);
-    if (!arg1) return ;
-  }
-  buildDawg(arg1);
-  if (arg1) jenv->ReleaseStringUTFChars(jarg1, (const char *)arg1);
+  result = (DawgSwig *)new DawgSwig();
+  *(DawgSwig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_dawgswig_DawgSwigMdlJNI_delete_1DawgSwig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  DawgSwig *arg1 = (DawgSwig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(DawgSwig **)&jarg1; 
+  delete arg1;
 }
 
 
