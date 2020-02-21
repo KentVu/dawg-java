@@ -7,13 +7,6 @@ class JniDawgTest: StringSpec() {
         "createADawg" {
             val dawg = DawgTrie()
             dawg.run {
-                insert("Vietnam")
-                insert("Cambodia")
-                insert("Thailand")
-                insert("Laos")
-                insert("countries")
-                insert("Venezuela")
-                save()
             }
         }
     }

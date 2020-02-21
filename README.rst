@@ -20,6 +20,7 @@ References
 - https://github.com/vladsoroka/GradleJniSample
 - https://www.jetbrains.com/help/idea/setting-up-jni-development-in-gradle-project.html
 - https://gist.github.com/santa4nt/4a8fd626335e36c94356 Sample JNI/C++ HelloWorld
+- https://developer.android.com/training/articles/perf-jni RegisterNatives
 
 License
 =======

@@ -13,15 +13,36 @@
 
 using std::ios;
 
+// JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved)
+// {
+//   	JNIEnv *env;
+
+//     if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
+//         return JNI_ERR;
+//     }
+//     // Find your class. JNI_OnLoad is called from the correct class loader context for this to work.
+//     jclass c = env->FindClass("kentvu/dawgjava/DawgTrie");
+//     if (c == nullptr) return JNI_ERR;
+
+//     // Register your class' native methods.
+//     static const JNINativeMethod methods[] = {
+//         {"buildDawg", "(Ljava/lang/String;Lkentvu/dawgjava/WordSequence;)V", reinterpret_cast<void*>(Java_kentvu_dawgjava_DawgTrie_buildDawg)}
+//     };
+//     int rc = env->RegisterNatives(c, methods, sizeof(methods)/sizeof(JNINativeMethod));
+//     if (rc != JNI_OK) return rc;
+
+//     return JNI_VERSION_1_6;
+// }
+
 /*
  * Class:     HelloJNI
  * Method:    sayHello
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_kentvu_dawgjava_DawgTrie_saveDawg
-  (JNIEnv *env, jobject thisObj, jstring arg)
+void Java_kentvu_dawgjava_DawgTrie_buildDawg
+  (JNIEnv *env, jobject thisObj, jstring filenamej, jobject seed)
 {
-    string filename = ToString(env, arg);
+    string filename = ToString(env, filenamej);
     cout << "Reading " << filename << endl;
     std::ifstream infile(filename);
     dawgdic::DawgBuilder dawg_builder;

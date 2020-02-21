@@ -5,13 +5,10 @@ import io.kotlintest.assertSoftly
 import io.kotlintest.inspectors.forAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.toList
-import kotlinx.coroutines.runBlocking
-import org.omg.CORBA.WStringSeqHelper
+import java.time.Duration
 
 //@UseExperimental(ObsoleteCoroutinesApi::class)
 @ObsoleteCoroutinesApi
@@ -19,7 +16,7 @@ class TrieTests: StringSpec() {
     private lateinit var trie: Trie
 
     init {
-        "build" {
+        "build".config(timeout = Duration.ofMillis(100)) {
             val channel = Channel<Int>()
             val job = GlobalScope.async {
                 val progress = channel.toList()
@@ -29,8 +26,16 @@ class TrieTests: StringSpec() {
                     progress[2] shouldBe 6
                 }
             }
-            trie.build(content.wordSequence(), channel)
-            job.await()
+            val s = """Vietnam
+Cambodia
+Thailand
+Laos
+countries
+Venezuela"""
+            trie.build(s.wordSequence(), channel)
+            withTimeout(100) {
+                job.await()
+            }
         }
 
         "contains" {

@@ -35,3 +35,6 @@ tags
 build/
 *.iml
 local.properties
+.project
+.settings/
+.classpath
