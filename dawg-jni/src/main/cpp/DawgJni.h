@@ -12,8 +12,14 @@ extern "C" {
  * Method:    sayHello
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_kentvu_dawgjava_DawgTrie_buildDawg
-  (JNIEnv *, jobject, jstring, jobject);
+JNIEXPORT jlong JNICALL Java_kentvu_dawgjava_DawgTrie_dawgBuilder
+  (JNIEnv *, jobject, jstring);
+
+JNIEXPORT void JNICALL Java_kentvu_dawgjava_DawgTrie_dawgBuilderInsert
+  (JNIEnv *, jobject, jlong, jstring);
+
+JNIEXPORT void JNICALL Java_kentvu_dawgjava_DawgTrie_dawgBuilderFinish
+  (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus
 }

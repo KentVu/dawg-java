@@ -26,7 +26,7 @@ using std::ios;
 
 //     // Register your class' native methods.
 //     static const JNINativeMethod methods[] = {
-//         {"buildDawg", "(Ljava/lang/String;Lkentvu/dawgjava/WordSequence;)V", reinterpret_cast<void*>(Java_kentvu_dawgjava_DawgTrie_buildDawg)}
+//         {"dawgBuilder", "(Ljava/lang/String;Lkentvu/dawgjava/WordSequence;)V", reinterpret_cast<void*>(Java_kentvu_dawgjava_DawgTrie_dawgBuilder)}
 //     };
 //     int rc = env->RegisterNatives(c, methods, sizeof(methods)/sizeof(JNINativeMethod));
 //     if (rc != JNI_OK) return rc;
@@ -34,35 +34,41 @@ using std::ios;
 //     return JNI_VERSION_1_6;
 // }
 
+string filename;
+
 /*
  * Class:     HelloJNI
  * Method:    sayHello
  * Signature: (Ljava/lang/String;)V
  */
-void Java_kentvu_dawgjava_DawgTrie_buildDawg
-  (JNIEnv *env, jobject thisObj, jstring filenamej, jobject seed)
+jlong Java_kentvu_dawgjava_DawgTrie_dawgBuilder
+  (JNIEnv *env, jobject thisObj, jstring filenamej)
 {
-    string filename = ToString(env, filenamej);
-    cout << "Reading " << filename << endl;
-    std::ifstream infile(filename);
+    filename = ToString(env, filenamej);
     dawgdic::DawgBuilder dawg_builder;
-    std::string line;
-    while (std::getline(infile, line))
-    {
-        // Inserts keys into a simple dawg.
-        dawg_builder.Insert(line.c_str());
-    }
+    return reinterpret_cast<jlong>(&dawg_builder);
+}
 
+void Java_kentvu_dawgjava_DawgTrie_dawgBuilderInsert
+  (JNIEnv *env, jobject thisObj, jlong builderPtr, jstring wordj)
+{
+    dawgdic::DawgBuilder *dawg_builder = (dawgdic::DawgBuilder*)builderPtr;
+    dawg_builder->Insert(env->GetStringUTFChars(wordj, JNI_FALSE));
+}
+
+void Java_kentvu_dawgjava_DawgTrie_dawgBuilderFinish
+  (JNIEnv *env, jobject thisObj, jlong builderPtr)
+{
+    dawgdic::DawgBuilder *dawg_builder = (dawgdic::DawgBuilder*)builderPtr;
     // Finishes building a simple dawg.
     dawgdic::Dawg dawg;
-    dawg_builder.Finish(&dawg);
+    dawg_builder->Finish(&dawg);
 
     // Builds a dictionary from a simple dawg.
     dawgdic::Dictionary dic;
     dawgdic::DictionaryBuilder::Build(dawg, &dic);
 
     // Writes a dictionary into a file "test.dic".
-    std::ofstream dic_file("test.dic", ios::binary);
+    std::ofstream dic_file(filename, ios::binary);
     dic.Write(&dic_file);
 }
-

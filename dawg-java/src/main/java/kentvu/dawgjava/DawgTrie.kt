@@ -9,7 +9,9 @@ class DawgTrie: Trie {
             System.loadLibrary("dawg-jni")
         }
     }
-    private external fun buildDawg(path: String, seed: WordSequence)
+    private external fun dawgBuilder(path: String): Long
+    private external fun dawgBuilderInsert(dawgBuilderPtr: Long, word: String)
+    private external fun dawgBuilderFinish(dawgBuilderPtr: Long)
 
     fun insert(s: String) {
         words.add(s)
@@ -17,7 +19,12 @@ class DawgTrie: Trie {
 
     private val words = sortedSetOf<String>()
     override suspend fun build(seed: WordSequence, progressListener: Channel<Int>?) {
-        buildDawg("trie.dawg", seed)
+        var count = 0
+        var dawgBuilderPtr = dawgBuilder("trie.dawg")
+        for (word in seed) {
+            dawgBuilderInsert(dawgBuilderPtr, word)
+        }
+        dawgBuilderFinish(dawgBuilderPtr)
     }
 
     override fun search(prefix: String): Map<String, Int> {
