@@ -26,12 +26,6 @@ class TrieTests: StringSpec() {
                     progress[2] shouldBe 6
                 }
             }
-            val s = """Vietnam
-Cambodia
-Thailand
-Laos
-countries
-Venezuela"""
             trie.build(content.lineSequence(), channel)
             withTimeout(100) {
                 job.await()
@@ -39,14 +33,24 @@ Venezuela"""
         }
 
         "contains" {
-            //trie.build(content.lineSequence())
-            trie.contains("a") shouldBe true
-            trie.contains("b") shouldBe true
-            trie.contains("c") shouldBe true
+            // sorted
+            val s = """
+                Cambodia
+                Laos
+                Thailand
+                Vietnam
+                Venezuela
+                countries
+                """.trimIndent()
+            trie.build(s.lineSequence())
+            trie.contains("Vietnam") shouldBe true
+            trie.contains("Cambodia") shouldBe true
+            trie.contains("Thailand") shouldBe true
+            trie.contains("England") shouldBe false
         }
 
         "find" {
-            //trie.build(content.lineSequence())
+            trie.build(content.lineSequence())
             val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
                 it.value shouldBe 0
             }

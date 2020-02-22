@@ -38,3 +38,4 @@ local.properties
 .project
 .settings/
 .classpath
+.vscode/settings.json

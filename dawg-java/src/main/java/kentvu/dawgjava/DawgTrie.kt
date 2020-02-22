@@ -16,13 +16,9 @@ class DawgTrie: Trie {
         }
     }
 
-    fun insert(s: String) {
-        words.add(s)
-    }
+    val dawgSwig = dawgswig.DawgSwig("test.dawg")
 
-    private val words = sortedSetOf<String>()
     override suspend fun build(seed: Sequence<String>, progressListener: Channel<Int>?) {
-        val dawgSwig = dawgswig.DawgSwig("test.dawg")
         var count = 0
         seed.forEach {
             dawgSwig.Insert(it)
@@ -34,11 +30,11 @@ class DawgTrie: Trie {
     }
 
     override fun search(prefix: String): Map<String, Int> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dawgSwig.Search(prefix)
     }
 
     override fun contains(key: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return dawgSwig.Contains(key)
     }
 }
 

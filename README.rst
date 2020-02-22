@@ -6,11 +6,14 @@ Port of dawgdic_ C++ library to Java.
 Build
 =====
 
+Run:: `./gradlew build`.
+
 If you encounter `UnsatisfiedLinkError` when run test from Android Studio:
-Open `Edit Configuration` -> `Templates` -> `Android JUnit`, under `VM Options` change to:
-```
--ea  -Djava.library.path=../dawg-jni/build/lib/main/debug
-```
+
+Open `Edit Configuration` -> `Templates` -> `Android JUnit`, under `VM Options` change to::
+
+  -ea -Djava.library.path=../dawg-jni/build/lib/main/debug
+
 Make sure `Working directory` is still `$MODULE_DIR$`.
 
 References
