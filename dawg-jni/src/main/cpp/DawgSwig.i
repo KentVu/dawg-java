@@ -1,52 +1,16 @@
 /* File: dawg.i */
 %module DawgSwigMdl
-%inline %{
-#include "DawgJni.h"
-#include <fstream>
-
-class SwigMap {
-    char* []entries();
-};
-
-class DawgSwig
-{
-    std::string filename;
-    dawgdic::DawgBuilder dawg_builder;
-    dawgdic::Dictionary dic;
-
-public:
-    DawgSwig(char* filename): filename(filename) {
-        //string tmp
-        //DawgSwig::filename(filename);
-        printf("new DawgSwig for %s\n", filename);
-
-    }
-    void Insert(char* word) {
-        printf("Insert %s\n", word);
-        // Inserts keys into a simple dawg.
-        dawg_builder.Insert(word);
-    }
-    void Finish() {
-        printf("Finish()\n");
-        // Finishes building a simple dawg.
-        dawgdic::Dawg dawg;
-        dawg_builder.Finish(&dawg);
-
-        // Builds a dictionary from a simple dawg.
-        dawgdic::DictionaryBuilder::Build(dawg, &dic);
-
-        // Writes a dictionary into a file "test.dic".
-        std::ofstream dic_file(filename, std::ios::binary);
-        dic.Write(&dic_file);
-    }
-    bool Contains(char* key) {
-        printf("Contains()\n");
-        return dic.Contains(key);
-    }
-    SwigMap Search(char* prefix) {
-        printf("Search() for %s\n", prefix);
-    }
-};
+%{
+//#include "dawgdic/dawg-builder.h"
 %}
+//%typemap(directorin, descriptor="Ljava/lang/String;") CharType "$input = (jint) $1;"
+//%typemap(jni) size_t "jint"
+//%typedef size_t jint;
+%typemap(in) BaseType "jint"
+%include "dawgdic/base-types.h"
+%include "dawgdic/dawg.h"
+%include "dawgdic/dawg-builder.h"
+%include "dawgdic/dictionary.h"
+%include "dawgdic/dictionary-builder.h"
 %immutable;
 //dawgdic::DawgBuilder newDawgBuilder();

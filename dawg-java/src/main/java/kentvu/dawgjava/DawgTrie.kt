@@ -1,6 +1,6 @@
 package kentvu.dawgjava
 
-import dawgswig.SwigMap
+import dawgswig.*
 import kotlinx.coroutines.channels.Channel
 
 private val String.size: Int
@@ -16,32 +16,35 @@ class DawgTrie: Trie {
             System.loadLibrary("dawg-jni")
         }
     }
-
-    val dawgSwig = dawgswig.DawgSwig("test.dawg")
+    private val dic = dawgswig.Dictionary()
 
     override suspend fun build(seed: Sequence<String>, progressListener: Channel<Int>?) {
         var count = 0
+
+        val dawgBuilder = dawgswig.DawgBuilder()
         seed.forEach {
-            dawgSwig.Insert(it)
+            dawgBuilder.Insert(it)
             count += it.size + ESTIMATED_LINEBREAK_SIZE /*the line ending*/
             progressListener?.send(count)
         }
-        dawgSwig.Finish()
+        // Finishes building a simple dawg.
+        val dawg = Dawg()
+        dawgBuilder.Finish(dawg)
+
+        // Builds a dictionary from a simple dawg.
+        DictionaryBuilder.Build(dawg, dic);
         progressListener?.close()
     }
 
+    override fun contains(key: String): Boolean {
+        return dic.Contains(key)
+    }
+
     override fun search(prefix: String): PrefixSearchResult {
-        val swigSearch = dawgSwig.Search(prefix)
+        val index = dic.root()
+        dic.Follow(prefix, prefix.length, index)
         return SwigPrefixSearchResult(swigSearch)
     }
-
-    override fun contains(key: String): Boolean {
-        return dawgSwig.Contains(key)
-    }
-}
-
-class SwigPrefixSearchResult(swigSearch: SwigMap): PrefixSearchResult {
-
 }
 
 object TrieFactory {
