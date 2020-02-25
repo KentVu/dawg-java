@@ -2,6 +2,7 @@ package kentvu.dawgjava
 
 import io.kotlintest.TestCase
 import io.kotlintest.assertSoftly
+import io.kotlintest.inspectors.forAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.*

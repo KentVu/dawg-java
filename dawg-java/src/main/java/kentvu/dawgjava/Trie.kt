@@ -12,6 +12,4 @@ interface Trie {
 }
 
 
-interface PrefixSearchResult {
-
-}
+typealias PrefixSearchResult = Map<String, Int>
