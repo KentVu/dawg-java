@@ -4,6 +4,10 @@
 #include "DawgJni.h"
 #include <fstream>
 
+class SwigMap {
+    char* []entries();
+};
+
 class DawgSwig
 {
     std::string filename;
@@ -39,8 +43,10 @@ public:
         printf("Contains()\n");
         return dic.Contains(key);
     }
+    SwigMap Search(char* prefix) {
+        printf("Search() for %s\n", prefix);
+    }
 };
-//DawgSwig newDawgSwig();
 %}
 %immutable;
 //dawgdic::DawgBuilder newDawgBuilder();

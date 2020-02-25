@@ -1,5 +1,6 @@
 package kentvu.dawgjava
 
+import dawgswig.SwigMap
 import kotlinx.coroutines.channels.Channel
 
 private val String.size: Int
@@ -29,13 +30,18 @@ class DawgTrie: Trie {
         progressListener?.close()
     }
 
-    override fun search(prefix: String): Map<String, Int> {
-        dawgSwig.Search(prefix)
+    override fun search(prefix: String): PrefixSearchResult {
+        val swigSearch = dawgSwig.Search(prefix)
+        return SwigPrefixSearchResult(swigSearch)
     }
 
     override fun contains(key: String): Boolean {
         return dawgSwig.Contains(key)
     }
+}
+
+class SwigPrefixSearchResult(swigSearch: SwigMap): PrefixSearchResult {
+
 }
 
 object TrieFactory {
