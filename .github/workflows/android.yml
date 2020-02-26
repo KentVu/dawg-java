@@ -24,3 +24,9 @@ jobs:
       with:
         name: test-result
         path: dawg-java/build/reports/tests/test/
+    - name: Upload SWIG artifacts
+      uses: actions/upload-artifact@v1.0.0
+      if: failure()
+      with:
+        name: swig-generated
+        path: dawg-java/src/main/java/dawgswig

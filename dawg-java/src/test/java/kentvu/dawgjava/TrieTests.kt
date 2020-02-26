@@ -44,9 +44,6 @@ class TrieTests: StringSpec() {
 
         "find" {
             trie.build(content.lineSequence())
-            val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
-                it.value shouldBe 0
-            }
             trie.search("a").let {
                 it.entries.let {
                     it.forAll(shouldBe0)
@@ -63,9 +60,6 @@ class TrieTests: StringSpec() {
 
         "find2" {
             trie.build(content_countries.lineSequence())
-            val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
-                it.value shouldBe 0
-            }
             trie.search("V").let {
                 it.shouldContainKey("Vietnam")
                 it.entries.forAll(shouldBe0)
@@ -89,6 +83,9 @@ class TrieTests: StringSpec() {
                 Vietnam
                 countries
                 """.trimIndent()
+        val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
+            it.value shouldBe 0
+        }
     }
 }
 
