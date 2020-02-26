@@ -5,6 +5,4 @@
 #include "dawgdic/dawg-builder.h"
 #include "dawgdic/dictionary-builder.h"
 
-void JniMapPut(JNIEnv *jenv, jobject, char *, dawgdic::ValueType);
-
 #endif

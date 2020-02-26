@@ -31,7 +31,10 @@ class DawgTrie: Trie {
 
     override fun search(prefix: String): PrefixSearchResult {
         val result = mutableMapOf<String, Int>()
-        val swigSearch = dawgSwig.Search(prefix, result)
+        val swigResult = dawgSwig.Search(prefix)
+        for (swigEntry in swigResult) {
+            result[swigEntry.key] = swigEntry.value
+        }
         return result.toMap()
     }
 
