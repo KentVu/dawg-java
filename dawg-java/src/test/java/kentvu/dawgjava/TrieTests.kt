@@ -44,16 +44,10 @@ class TrieTests: StringSpec() {
 
         "find" {
             trie.build(content.lineSequence())
-            trie.search("a").let {
-                it.entries.let {
-                    it.forAll(shouldBe0)
-                }
-                it.shouldContainKey("a")
-            }
             for(prefix in arrayOf("a", "b", "c")) {
                 trie.search(prefix).let {
                     it.shouldContainKey(prefix)
-                    it.entries.forAll(shouldBe0)
+                    it.entries.forAll(mapEntryValueShouldBe0)
                 }
             }
         }
@@ -62,9 +56,9 @@ class TrieTests: StringSpec() {
             trie.build(content_countries.lineSequence())
             trie.search("V").let {
                 it.shouldContainKey("Vietnam")
-                it.entries.forAll(shouldBe0)
+                it.entries.forAll(mapEntryValueShouldBe0)
             }
-            trie.search("c").entries.forAll(shouldBe0)
+            trie.search("c").entries.forAll(mapEntryValueShouldBe0)
         }
     }
 
@@ -81,9 +75,10 @@ class TrieTests: StringSpec() {
                 Thailand
                 Venezuela
                 Vietnam
+                Việt
                 countries
                 """.trimIndent()
-        val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
+        val mapEntryValueShouldBe0: (Map.Entry<*, Int>) -> Unit = {
             it.value shouldBe 0
         }
     }
