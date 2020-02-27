@@ -1,9 +1,4 @@
 #!/bin/bash
-if ! which swig ; then
-	echo '[ERROR] Need SWIG!'
-	exit 1
-fi
-swig -version
 cpp_source_root=dawg-jni/src/main/cpp
 infile=$cpp_source_root/DawgSwig.i
 out_cpp_file=$cpp_source_root/DawgSWIG.cpp
@@ -23,6 +18,12 @@ elif [[ "$1" = "prepare-artifacts" ]]; then
     cp -v $out_cpp_file $swig_generated/cpp/
     exit
 fi
+
+if ! which swig ; then
+	echo '[ERROR] Need SWIG!'
+	exit 1
+fi
+swig -version
 
 mkdir -pv $outdir/$package
 swig -v -c++ -java -o $out_cpp_file -outdir $outdir/$package -package $package $infile

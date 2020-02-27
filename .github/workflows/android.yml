@@ -33,20 +33,19 @@ jobs:
         export PATH=$PWD/swig/dist/bin:$PATH
         ./gradlew --info build
     - name: Upload test reports
+      continue-on-error: true
       uses: actions/upload-artifact@v1.0.0
       if: failure()
       with:
         name: test-result
         path: dawg-java/build/reports/tests/test/
-#    - name: Prepare test artifacts
-#      if: failure()
-#      run: |
-#        cp -rv dawg-java/build/reports/tests/test artifacts/
     - name: Prepare SWIG artifacts
+      continue-on-error: true
       run: |
         ./run_swig.sh prepare-artifacts artifacts/swig
     - name: Upload SWIG artifacts
       uses: actions/upload-artifact@v1.0.0
+      continue-on-error: true
       with:
         name: build-artifacts
         path: artifacts/swig
