@@ -43,9 +43,15 @@ jobs:
       continue-on-error: true
       run: |
         ./run_swig.sh prepare-artifacts artifacts/swig
-    - name: Upload SWIG artifacts
+    - name: Upload SWIG generated files
       uses: actions/upload-artifact@v1.0.0
       continue-on-error: true
       with:
-        name: build-artifacts
+        name: swig-generated
         path: artifacts/swig
+    - name: Upload SWIG distribution
+      uses: actions/upload-artifact@v1.0.0
+      continue-on-error: true
+      with:
+        name: swig-bin
+        path: swig/dist
