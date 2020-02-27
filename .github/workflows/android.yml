@@ -23,6 +23,7 @@ jobs:
       run: |
         sudo apt-get -yqq install automake bison
         cd swig
+        git log -1
         ./autogen.sh
         ./configure --prefix=$PWD/dist
         make
@@ -37,9 +38,15 @@ jobs:
       with:
         name: test-result
         path: dawg-java/build/reports/tests/test/
+#    - name: Prepare test artifacts
+#      if: failure()
+#      run: |
+#        cp -rv dawg-java/build/reports/tests/test artifacts/
+    - name: Prepare SWIG artifacts
+      run: |
+        ./run_swig.sh prepare-artifacts artifacts/swig
     - name: Upload SWIG artifacts
       uses: actions/upload-artifact@v1.0.0
-      if: failure()
       with:
-        name: swig-generated
-        path: dawg-java/src/main/java/dawgswig
+        name: build-artifacts
+        path: artifacts/swig

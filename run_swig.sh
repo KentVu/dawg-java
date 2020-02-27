@@ -12,10 +12,15 @@ package=dawgswig
 
 if [[ "$1" = "cleanup" ]]; then
     echo 'cleanup!'
-    #rm -v $outdir/$package/{DawgSwig.java,DawgSwigJNI.java,SWIGTYPE_p_dawgdic__DawgBuilder.java}
-    #rm -v $outdir/$package/SWIGTYPE_p_*.java
     rm -v $outdir/$package/*.java
     rm -v $out_cpp_file
+    exit
+elif [[ "$1" = "prepare-artifacts" ]]; then
+    swig_generated=${2:-swig-generated}
+    echo 'prepare-artifacts! '$swig_generated
+    mkdir -pv $swig_generated/{java,cpp}
+    cp -rv $outdir/$package $swig_generated/java/
+    cp -v $out_cpp_file $swig_generated/cpp/
     exit
 fi
 
