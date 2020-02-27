@@ -29,8 +29,13 @@ class DawgTrie: Trie {
         progressListener?.close()
     }
 
-    override fun search(prefix: String): Map<String, Int> {
-        dawgSwig.Search(prefix)
+    override fun search(prefix: String): PrefixSearchResult {
+        val result = mutableMapOf<String, Int>()
+        val swigResult = dawgSwig.Search(prefix)
+        for (swigEntry in swigResult) {
+            result[swigEntry.key] = swigEntry.value
+        }
+        return result.toMap()
     }
 
     override fun contains(key: String): Boolean {

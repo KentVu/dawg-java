@@ -7,6 +7,9 @@ interface Trie {
      * @param progressListener Listen to progress by bytes read.
      */
     suspend fun build(seed: Sequence<String>, progressListener: Channel<Int>? = null)
-    fun search(prefix: String): Map<String, Int>
+    fun search(prefix: String): PrefixSearchResult
     fun contains(key: String): Boolean
 }
+
+
+typealias PrefixSearchResult = Map<String, Int>

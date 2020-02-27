@@ -1,18 +1,21 @@
+![Android CI](https://github.com/KentVu/dawg-java/workflows/Android%20CI/badge.svg?branch=master)
+
 dawg-java
 =========
 
-Port of dawgdic_ C++ library to Java.
+Port of [dawgdic](https://code.google.com/p/dawgdic/) C++ library to Java.
 
 Build
 =====
 
-Run:: `./gradlew build`.
+Run: `./gradlew build`.
 
 If you encounter `UnsatisfiedLinkError` when run test from Android Studio:
 
-Open `Edit Configuration` -> `Templates` -> `Android JUnit`, under `VM Options` change to::
-
-  -ea -Djava.library.path=../dawg-jni/build/lib/main/debug
+Open `Edit Configuration` -> `Templates` -> `Android JUnit`, under `VM Options` change to:
+```
+-ea -Djava.library.path=../dawg-jni/build/lib/main/debug
+```
 
 Make sure `Working directory` is still `$MODULE_DIR$`.
 
@@ -29,8 +32,5 @@ License
 =======
 
 Wrapper code is licensed under MIT License.
-Bundled `dawgdic`_ C++ library is licensed under BSD license.
-Bundled libb64_ is Public Domain.
-
-.. _dawgdic: https://code.google.com/p/dawgdic/
-.. _libb64: http://libb64.sourceforge.net/
+Bundled [dawgdic](https://code.google.com/p/dawgdic/) C++ library is licensed under BSD license.
+Bundled [libb64](http://libb64.sourceforge.net/) is Public Domain.

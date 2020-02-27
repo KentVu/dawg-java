@@ -7,20 +7,74 @@ jobs:
 
     runs-on: ubuntu-latest
 
+#    env:
+#      USE_PREBUILT_SWIG: true
+#      PREBUILT_SWIG_URL: https://github.com/KentVu/dawg-java/actions/runs/45950240
+
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Install SWIG
+    - name: Checkout SWIG
+#      if: steps.cache-swig.outputs.cache-hit != 'true'
+      uses: actions/checkout@v2
+      with:
+        repository: swig/swig
+        path: swig
+    - uses: actions/download-artifact@v1
+      continue-on-error: true
+      with:
+        name: swig-bin
+        path: swig/dist
+    - name: Install SWIG from source
+#      if: steps.cache-swig.outputs.cache-hit != 'true'
+#      if: failure()
       run: |
-        sudo apt-get -yqq install swig
-    - name: Build with Gradle
-      run: ./gradlew --info build
-    - name: Upload artifact
+        if ! [ -d swig/dist]; then
+          sudo apt-get -yqq install automake bison
+          cd swig
+          git log -1
+          ./autogen.sh
+          ./configure --prefix=$PWD/dist
+          make
+          make install
+        else
+          echo swig downloaded
+          ls swig/dist
+        fi
+    - name: Upload SWIG distribution
+      uses: actions/upload-artifact@v1.0.0
+      continue-on-error: true
+      with:
+        name: swig-bin
+        path: swig/dist
+#    - name: Cache SWIG build
+#      id: cache-swig
+#      if: success()
+#      uses: actions/cache@v1
+#      with:
+#        path: swig/dist
+#        key: ${{ runner.os }}-swig
+    - name: Build with Gradle & SWIG
+      run: |
+        export PATH=$PWD/swig/dist/bin:$PATH
+        ./gradlew --info build
+    - name: Upload test reports
+      continue-on-error: true
       uses: actions/upload-artifact@v1.0.0
       if: failure()
       with:
         name: test-result
         path: dawg-java/build/reports/tests/test/
+    - name: Prepare SWIG artifacts
+      continue-on-error: true
+      run: |
+        ./run_swig.sh prepare-artifacts artifacts/swig
+    - name: Upload SWIG generated files
+      uses: actions/upload-artifact@v1.0.0
+      continue-on-error: true
+      with:
+        name: swig-generated
+        path: artifacts/swig

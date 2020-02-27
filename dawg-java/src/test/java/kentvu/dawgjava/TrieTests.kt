@@ -3,6 +3,7 @@ package kentvu.dawgjava
 import io.kotlintest.TestCase
 import io.kotlintest.assertSoftly
 import io.kotlintest.inspectors.forAll
+import io.kotlintest.matchers.maps.shouldContainKey
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.*
@@ -34,15 +35,7 @@ class TrieTests: StringSpec() {
 
         "contains" {
             // sorted
-            val s = """
-                Cambodia
-                Laos
-                Thailand
-                Vietnam
-                Venezuela
-                countries
-                """.trimIndent()
-            trie.build(s.lineSequence())
+            trie.build(content_countries.lineSequence())
             trie.contains("Vietnam") shouldBe true
             trie.contains("Cambodia") shouldBe true
             trie.contains("Thailand") shouldBe true
@@ -51,12 +44,21 @@ class TrieTests: StringSpec() {
 
         "find" {
             trie.build(content.lineSequence())
-            val shouldBe0: (Map.Entry<String, Int>) -> Unit = {
-                it.value shouldBe 0
+            for(prefix in arrayOf("a", "b", "c")) {
+                trie.search(prefix).let {
+                    it.shouldContainKey(prefix)
+                    it.entries.forAll(mapEntryValueShouldBe0)
+                }
             }
-            trie.search("a").entries.forAll(shouldBe0)
-            trie.search("b").entries.forAll(shouldBe0)
-            trie.search("c").entries.forAll(shouldBe0)
+        }
+
+        "find2" {
+            trie.build(content_countries.lineSequence())
+            trie.search("V").let {
+                it.shouldContainKey("Vietnam")
+                it.entries.forAll(mapEntryValueShouldBe0)
+            }
+            trie.search("c").entries.forAll(mapEntryValueShouldBe0)
         }
     }
 
@@ -66,6 +68,19 @@ class TrieTests: StringSpec() {
 
     companion object {
         private const val content = "a\nb\nc"
+        // sorted!
+        val content_countries = """
+                Cambodia
+                Laos
+                Thailand
+                Venezuela
+                Vietnam
+                Việt
+                countries
+                """.trimIndent()
+        val mapEntryValueShouldBe0: (Map.Entry<*, Int>) -> Unit = {
+            it.value shouldBe 0
+        }
     }
 }
 
