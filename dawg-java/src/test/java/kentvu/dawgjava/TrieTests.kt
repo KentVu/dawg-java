@@ -62,7 +62,7 @@ class TrieTests: StringSpec() {
         }
     }
 
-    override fun beforeTest(testCase: TestCase) = runBlocking {
+    override fun beforeTest(testCase: TestCase) {
         trie = TrieFactory.newTrie()
     }
 

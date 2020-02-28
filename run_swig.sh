@@ -12,7 +12,7 @@ if [[ "$1" = "cleanup" ]]; then
     exit
 elif [[ "$1" = "prepare-artifacts" ]]; then
     swig_generated=${2:-swig-generated}
-    echo 'prepare-artifacts! '$swig_generated
+    echo "prepare-artifacts!: $swig_generated"
     mkdir -pv $swig_generated/{java,cpp}
     cp -rv $outdir/$package $swig_generated/java/
     cp -v $out_cpp_file $swig_generated/cpp/
