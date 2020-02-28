@@ -30,6 +30,7 @@ class DawgTrie: Trie {
                 }
                 System.load(nativeLibTmpFile.absolutePath)
             } catch (e: Exception) {
+                e.printStackTrace()
                 System.loadLibrary(libName)
             }
         }

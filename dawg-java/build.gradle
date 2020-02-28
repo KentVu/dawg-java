@@ -42,12 +42,14 @@ task executeSwig(type: Exec) {
     commandLine './run_swig.sh'
 }
 
-compileKotlin.dependsOn executeSwig
-//preBuild.dependsOn executeSwig
-//build.dependsOn executeSwig
-//build.doFirst {
-//    executeSwig()
-//}
-
 clean.dependsOn cleanSwig
-test.dependsOn ':dawg-jni:linkDebug'
+compileKotlin.dependsOn executeSwig
+
+task copyLib(type: Copy) {
+    from file("${project(":dawg-jni").buildDir}/lib/main/debug").absolutePath/* {
+        include '*'
+    }*/
+    into 'src/main/resources'
+}
+copyLib.dependsOn ':dawg-jni:linkDebug'
+test.dependsOn copyLib
