@@ -39,3 +39,4 @@ local.properties
 .settings/
 .classpath
 .vscode/settings.json
+/dawg-android/.cxx
