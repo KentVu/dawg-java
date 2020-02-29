@@ -1,3 +1,4 @@
+# This file is for building for android
 # Sets the minimum version of CMake required to build your native library.
 # This ensures that a certain set of CMake features is available to
 # your build.
@@ -14,37 +15,28 @@ cmake_minimum_required(VERSION 3.4.1)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 
 add_library( # Specifies the name of the library.
-             dawgdic-build
+             dawg-jni
 
              # Sets the library as a shared library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             dawgdic-build.cc )
+             DawgSWIG.cpp )
 
-add_library( # Specifies the name of the library.
-             dawgdic-find
-
-             # Sets the library as a shared library.
-             SHARED
-
-             # Provides a relative path to your source file(s).
-             dawgdic-find.cc )
-
-find_library( # Defines the name of the path variable that stores the
-              # location of the NDK library.
-              log-lib
-
-              # Specifies the name of the NDK library that
-              # CMake needs to locate.
-              log )
+#find_library( # Defines the name of the path variable that stores the
+#              # location of the NDK library.
+#              log-lib
+#
+#              # Specifies the name of the NDK library that
+#              # CMake needs to locate.
+#              log )
 
 # Links your native library against one or more other native libraries.
-target_link_libraries( # Specifies the target library.
-                       dawgdic-build
-
-                       # Links the log library to the target library.
-                       ${log-lib} )
+#target_link_libraries( # Specifies the target library.
+#                       dawgdic-build
+#
+#                       # Links the log library to the target library.
+#                       ${log-lib} )
 
 
 # Specifies a path to native header files.

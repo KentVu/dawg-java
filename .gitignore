@@ -40,3 +40,4 @@ local.properties
 .classpath
 .vscode/settings.json
 /dawg-android/.cxx
+/dawg-android/.externalNativeBuild/
