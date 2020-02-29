@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kentvu.dawgjava.test">
-    <application
-        android:name="android.support.multidex.MultiDexApplication" />
+    package="kentvu.dawgjava.android.test">
+    <application />
+    <!--android:name="android.support.multidex.MultiDexApplication" -->
 </manifest>

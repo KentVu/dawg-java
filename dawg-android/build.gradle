@@ -7,27 +7,16 @@ android {
     defaultConfig {
         targetSdkVersion 28
         minSdkVersion 15
-        multiDexEnabled true
+        //multiDexEnabled true
 
         versionCode 1
         versionName "0.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-//    buildTypes {
-//        debug {
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
-//    }
     externalNativeBuild {
         cmake {
             path "${project(':dawg-jni').projectDir}/src/main/cpp/CMakeLists.txt"
-        }
-    }
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
         }
     }
     compileOptions {
@@ -50,11 +39,11 @@ android {
 dependencies {
     // implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(':dawg-java')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    def multidex_version = "2.0.1"
-    testImplementation "androidx.multidex:multidex:$multidex_version"
+    //def multidex_version = "2.0.1"
+    //testImplementation "androidx.multidex:multidex:$multidex_version"
+    androidTestImplementation "androidx.test:rules:1.1.0"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'io.kotlintest:kotlintest-runner-junit5:3.4.2'
 }
