@@ -1,6 +1,10 @@
 package kentvu.dawgjava
 
 import kotlinx.coroutines.channels.Channel
+import java.io.File
+import java.net.URL
+import java.nio.file.Files
+
 
 private val String.size: Int
     get() = toByteArray().size
@@ -12,7 +16,23 @@ const val ESTIMATED_LINEBREAK_SIZE = 1 // assume linux/mac line endings. (\r, \n
 class DawgTrie: Trie {
     companion object {
         init {
-            System.loadLibrary("dawg-jni")
+            val libName = "dawg-jni"
+            try {
+                // based on https://stackoverflow.com/a/49500154/1562087
+                val mappedLibName = System.mapLibraryName(libName) // The name of the file in resources/ dir
+                val url: URL = DawgTrie::class.java.getResource("/$mappedLibName")
+                val tmpDir = Files.createTempDirectory("my-native-lib").toFile()
+                tmpDir.deleteOnExit()
+                val nativeLibTmpFile = File(tmpDir, mappedLibName)
+                nativeLibTmpFile.deleteOnExit()
+                url.openStream().use { `in` ->
+                    Files.copy(`in`, nativeLibTmpFile.toPath())
+                }
+                System.load(nativeLibTmpFile.absolutePath)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                System.loadLibrary(libName)
+            }
         }
     }
 
