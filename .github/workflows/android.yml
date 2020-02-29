@@ -7,10 +7,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-#    env:
-#      USE_PREBUILT_SWIG: true
-#      PREBUILT_SWIG_URL: https://github.com/KentVu/dawg-java/actions/runs/45950240
-
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 1.8
@@ -39,18 +35,7 @@ jobs:
     - name: Install SWIG from source
       if: steps.cache-swig.outputs.cache-hit != 'true'
       run: |
-        if ! [ -d swig/dist ]; then
-          sudo apt-get -yqq install automake bison
-          cd swig
-          git log -1
-          ./autogen.sh
-          ./configure --prefix=$PWD/dist
-          make
-          make install
-        else
-          echo swig downloaded
-          ls swig/dist
-        fi
+        ./build_swig.sh -d
 #    - name: Upload SWIG distribution
 #      uses: actions/upload-artifact@v1.0.0
 #      continue-on-error: true
@@ -78,3 +63,9 @@ jobs:
       with:
         name: swig-generated
         path: artifacts/swig
+    - name: Upload JNI lib
+      uses: actions/upload-artifact@v1.0.0
+      continue-on-error: true
+      with:
+        name: dawg-jni
+        path: dawg-jni/build/lib/main/debug/
