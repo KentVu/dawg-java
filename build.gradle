@@ -6,19 +6,37 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath "gradle.plugin.com.dorongold.plugins:task-tree:1.5"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+apply plugin: "com.dorongold.task-tree"
+
 allprojects {
     repositories {
         jcenter()
         google()
     }
+}
+
+task cleanSwig(type: Exec) {
+    //workingDir '..'
+    ignoreExitValue true
+    commandLine './run_swig.sh', 'cleanup'
+}
+
+task executeSwig(type: Exec) {
+    //workingDir '..'
+    //ignoreExitValue true
+    commandLine './run_swig.sh'
 }

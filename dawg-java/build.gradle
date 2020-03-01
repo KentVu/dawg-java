@@ -13,6 +13,7 @@ sourceCompatibility = 1.8
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    //implementation project(":dawg-jni")
     //testImplementation group: 'junit', name: 'junit', version: '4.12'
     testImplementation "io.mockk:mockk:1.9.3"
     testImplementation 'io.kotlintest:kotlintest-runner-junit5:3.4.2'
@@ -31,27 +32,15 @@ test {
     }
 }
 
-task cleanSwig(type: Exec) {
-    workingDir '..'
-    ignoreExitValue true
-    commandLine './run_swig.sh', 'cleanup'
-}
-
-task executeSwig(type: Exec) {
-    workingDir '..'
-    //ignoreExitValue true
-    commandLine './run_swig.sh'
-}
-
-clean.dependsOn cleanSwig
-compileKotlin.dependsOn executeSwig
-
 task copyLib(type: Copy) {
     from file("${project(":dawg-jni").buildDir}/lib/main/debug").absolutePath
     into 'src/main/resources'
 }
+
 copyLib.dependsOn ':dawg-jni:linkDebug'
-test.dependsOn copyLib
+compileKotlin.dependsOn copyLib
+
+clean.dependsOn rootProject.cleanSwig
 
 publishing {
     repositories {
