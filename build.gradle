@@ -29,14 +29,4 @@ allprojects {
     }
 }
 
-task cleanSwig(type: Exec) {
-    //workingDir '..'
-    ignoreExitValue true
-    commandLine './run_swig.sh', 'cleanup'
-}
-
-task executeSwig(type: Exec) {
-    //workingDir '..'
-    //ignoreExitValue true
-    commandLine './run_swig.sh'
-}
+apply from: 'run_swig.gradle'

@@ -1,8 +1,8 @@
 #!/bin/bash
-set -Ceux
+set -v
 
 #if [ "$1" == "-c" ]; then
-#    echo clone swig
+#    echo Clone swig
 #    git clone --depth=1 https://github.com/swig/swig.git
 #    shift
 #fi

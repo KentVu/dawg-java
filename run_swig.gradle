@@ -1,0 +1,11 @@
+task cleanSwig(type: Exec) {
+    workingDir "${project(":dawg-jni").path}/.."
+    ignoreExitValue true
+    commandLine './run_swig.sh', 'cleanup'
+}
+
+task executeSwig(type: Exec) {
+    workingDir "${project(":dawg-jni").projectDir}/.."
+    //ignoreExitValue true
+    commandLine './run_swig.sh'
+}
