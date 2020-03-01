@@ -15,10 +15,11 @@ if swig -version |grep 'Version 4'; then
     echo Swig version 4 installed
     exit
 fi
+distdir=${1:-$PWD/dist}
 echo Installing SWIG
 cd swig
 git log -1
 ./autogen.sh
-./configure --prefix=$PWD/dist
+./configure --prefix=$distdir
 make
 make install
