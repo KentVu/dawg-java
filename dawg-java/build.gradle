@@ -6,8 +6,8 @@ plugins {
 
 apply plugin: 'kotlin'
 
-group 'kentvu.dawgjava'
-version '0.0.2'
+group rootProject.group
+version rootProject.version
 
 sourceCompatibility = 1.8
 
