@@ -74,3 +74,9 @@ jobs:
           api-level: 29
           script: ./gradlew connectedCheck
 
+      - name: Persist test result
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: dawg-android-test-result
+          path: dawg-android/build/outputs/androidTest-results/connected
+          #TEST-test(AVD) - 10-dawg-android-.xml
