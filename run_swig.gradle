@@ -6,6 +6,8 @@ task cleanSwig(type: Exec) {
 
 task executeSwig(type: Exec) {
     workingDir "${project(":dawg-jni").projectDir}/.."
-    //ignoreExitValue true
+    inputs.file "${project(":dawg-jni").projectDir}/src/main/cpp/DawgSwig.i"
+    outputs.file "${project(":dawg-jni").projectDir}/src/main/cpp/DawgSWIG.cpp"
+    //execResult { }
     commandLine './run_swig.sh'
 }
