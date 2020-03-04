@@ -7,6 +7,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      GPG_PASS: ${{ secrets.GPG_PASS }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 1.8
@@ -33,7 +37,15 @@ jobs:
     - name: Build with Gradle & SWIG
       run: |
         export PATH=$PWD/swig/dist/bin:$PATH
+        gpg --batch --yes --decrypt --passphrase="$GPG_PASS" \
+          --output key.asc .github/key.asc.gpg
+        echo signing.keyId=716EB882 >> gradle.properties
+        echo signing.password="$SIGNING_PASSWORD" >> gradle.properties
+        # PWD is ./dawg-java/
+        echo signing.secretKeyRingFile=../key.asc >> gradle.properties
         ./gradlew --info build :dawg-java:publishGprPublicationToMavenLocal
+        mkdir -pv repository/
+        cp -rv ~/.m2/repository/kentvu repository || true
     - name: Upload test reports
       continue-on-error: true
       uses: actions/upload-artifact@v1.0.0
@@ -56,7 +68,8 @@ jobs:
       continue-on-error: true
       with:
         name: dawg-java-jars
-        path: ~/.m2/repository/kentvu/dawgjava/dawg-java/
+        path: repository/kentvu/dawgjava/dawg-java/
+        #path: ${{ env.HOME }}/.m2/repository/kentvu/dawgjava/dawg-java/
 
   android-test:
     runs-on: macOS-latest
