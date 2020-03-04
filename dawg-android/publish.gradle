@@ -1,42 +1,76 @@
 apply plugin: 'maven-publish'
 
-version '0.0.1'
+task androidSourcesJar(type: Jar) {
+    // https://stackoverflow.com/a/28704799/1562087
+    from android.sourceSets.main.java.srcDirs
+//    from project(":dawg-java").sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
+
+version rootProject.version
 
 // https://medium.com/swlh/how-to-publish-and-distribute-your-android-library-ce845c68c7f7
 // https://proandroiddev.com/publishing-android-libraries-to-the-github-package-registry-part-1-7997be54ea5a
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/kentvu/dawg-java")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+// https://stackoverflow.com/a/42160584/1562087
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/kentvu/dawg-java")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("PASSWORD")
+                }
             }
         }
-    }
-    publications {
-        gpr(MavenPublication) {
-            //from(components.android)
-            artifact("$buildDir/outputs/aar/dawg-android-release.aar")  {
-                builtBy tasks.getByName("assemble")
+        publications {
+            gpr(MavenPublication) {
+                // Applies the component for the release build variant.
+                //from components.release
+                artifact bundleReleaseAar
+
+                //artifact androidSourcesJar  // no sources to bundle :(
+                //artifact project(":dawg-java").tasks["sourcesJar"]
+                groupId rootProject.group
+                artifactId 'dawg-android'
+                version rootProject.version
+                pom.withXml {
+                    final dependenciesNode = asNode().appendNode('dependencies')
+
+                    ext.addDependency = { Dependency dep, String scope ->
+                        if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
+                            return // ignore invalid dependencies
+
+                        final dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dep.group)
+                        dependencyNode.appendNode('artifactId', dep.name)
+                        dependencyNode.appendNode('version', dep.version)
+                        dependencyNode.appendNode('scope', scope)
+
+                        if (!dep.transitive) {
+                            // If this dependency is transitive, we should force exclude all its dependencies them from the POM
+                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                            exclusionNode.appendNode('groupId', '*')
+                            exclusionNode.appendNode('artifactId', '*')
+                        } else if (!dep.properties.excludeRules.empty) {
+                            // Otherwise add specified exclude rules
+                            final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
+                            dep.properties.excludeRules.each { ExcludeRule rule ->
+                                exclusionNode.appendNode('groupId', rule.group ?: '*')
+                                exclusionNode.appendNode('artifactId', rule.module ?: '*')
+                            }
+                        }
+                    }
+
+                    // List all "compile" dependencies (for old Gradle)
+                    configurations.compile.getDependencies().each { dep -> addDependency(dep, "compile") }
+                    // List all "api" dependencies (for new Gradle) as "compile" dependencies
+                    configurations.api.getDependencies().each { dep -> addDependency(dep, "compile") }
+                    // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
+                    configurations.implementation.getDependencies().each { dep -> addDependency(dep, "runtime") }
+                }
             }
-            groupId 'kentvu.dawgjava'
-            artifactId 'dawg-android'
-            version this.version
-//            pom.withXml {
-//                def dependenciesNode = asNode().appendNode('dependencies')
-//                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-//                configurations.implementation.allDependencies.each {
-//                    // Ensure dependencies such as fileTree are not included in the pom.
-//                    if (it.name != 'unspecified') {
-//                        def dependencyNode = dependenciesNode.appendNode('dependency')
-//                        dependencyNode.appendNode('groupId', it.group)
-//                        dependencyNode.appendNode('artifactId', it.name)
-//                        dependencyNode.appendNode('version', it.version)
-//                    }
-//                }
-//            }
         }
     }
 }
