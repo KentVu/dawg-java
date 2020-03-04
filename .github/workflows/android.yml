@@ -33,7 +33,7 @@ jobs:
     - name: Build with Gradle & SWIG
       run: |
         export PATH=$PWD/swig/dist/bin:$PATH
-        ./gradlew --info build
+        ./gradlew --info build :dawg-java:publishGprPublicationToMavenLocal
     - name: Upload test reports
       continue-on-error: true
       uses: actions/upload-artifact@v1.0.0
@@ -51,12 +51,12 @@ jobs:
       with:
         name: swig-generated
         path: artifacts/swig
-    - name: Upload JNI lib
+    - name: Upload lib artifact
       uses: actions/upload-artifact@v1.0.0
       continue-on-error: true
       with:
-        name: dawg-jni
-        path: dawg-jni/build/lib/main/debug/
+        name: dawg-java-jars
+        path: ~/.m2/repository/kentvu/dawgjava/dawg-java/
 
   android-test:
     runs-on: macOS-latest
@@ -72,11 +72,18 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedCheck
+          script: ./gradlew :dawg-android:assemble connectedCheck
 
       - name: Persist test result
         uses: actions/upload-artifact@v1.0.0
         with:
           name: dawg-android-test-result
           path: dawg-android/build/outputs/androidTest-results/connected
-          #TEST-test(AVD) - 10-dawg-android-.xml
+
+      - name: Upload lib artifact
+        continue-on-error: true
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: dawg-android
+          path: dawg-android/build/outputs/aar
+          # wildcard not supported /*-release.aar
