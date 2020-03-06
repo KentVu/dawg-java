@@ -13,7 +13,7 @@ private val String.size: Int
 const val ESTIMATED_LINEBREAK_SIZE = 1 // assume linux/mac line endings. (\r, \n only)
 
 //@file:JvmName("DawgTrie")
-class DawgTrie: Trie {
+class DawgTrie(private val persistFilePath: String = "test.dawg"): Trie {
     companion object {
         init {
             val libName = "dawg-jni"
@@ -36,7 +36,7 @@ class DawgTrie: Trie {
         }
     }
 
-    val dawgSwig = dawgswig.DawgSwig("test.dawg")
+    private val dawgSwig = dawgswig.DawgSwig(persistFilePath)
 
     override suspend fun build(seed: Sequence<String>, progressListener: Channel<Int>?) {
         var count = 0

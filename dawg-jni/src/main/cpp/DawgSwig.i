@@ -27,7 +27,7 @@ public:
 
     }
     void Insert(char* word) {
-        printf("Insert %s\n", word);
+        //printf("Insert %s\n", word);
         // Inserts keys into a simple dawg.
         dawg_builder.Insert(word);
     }
