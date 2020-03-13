@@ -41,3 +41,7 @@ local.properties
 .vscode/settings.json
 /dawg-android/.cxx
 /dawg-android/.externalNativeBuild/
+dawg-jni/src/main/cpp/.idea/
+dawg-jni/src/main/cpp/cmake-build-debug*/
+dawg-java/src/main/java/dawgswig/
+dawg-jni/src/main/cpp/DawgSWIG.cpp

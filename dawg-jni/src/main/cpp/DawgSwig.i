@@ -26,11 +26,35 @@ public:
         printf("new DawgSwig for %s\n", filename.c_str());
 
     }
+
+    bool Load() {
+        // Opens a dictionary file.
+        std::ifstream dic_file;
+        dic_file.open(filename.c_str(), std::ios::binary);
+        if (!dic_file) {
+            std::cerr << "error: failed to open DicFile: "
+                      << filename << std::endl;
+            return false;
+        }
+        std::istream *dic_stream = &std::cin;
+        dic_stream = &dic_file;
+        if (!dic.Read(dic_stream)) {
+            std::cerr << "error: failed to read Dictionary" << std::endl;
+            return false;
+        }
+        if (!guide.Read(dic_stream)) {
+            std::cerr << "error: failed to read RankedGuide" << std::endl;
+            return false;
+        }
+        return true;
+    }
+
     void Insert(char* word) {
         //printf("Insert %s\n", word);
         // Inserts keys into a simple dawg.
         dawg_builder.Insert(word);
     }
+
     void Finish() {
         printf("Finish()\n");
         // Finishes building a simple dawg.

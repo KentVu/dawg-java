@@ -14,12 +14,11 @@ import java.time.Duration
 //@UseExperimental(ObsoleteCoroutinesApi::class)
 @ObsoleteCoroutinesApi
 class TrieTests: StringSpec() {
-    private lateinit var trie: Trie
 
     init {
-        "build".config(timeout = Duration.ofMillis(100)) {
+        "build".config(timeout = Duration.ofMillis(1000)) {
             val channel = Channel<Int>()
-            val job = GlobalScope.async {
+            val job = async {
                 val progress = channel.toList()
                 assertSoftly {
                     progress[0] shouldBe 2
@@ -27,15 +26,24 @@ class TrieTests: StringSpec() {
                     progress[2] shouldBe 6
                 }
             }
-            trie.build(content.lineSequence(), channel)
+            val trie = TrieFactory.newTrie("a\nb\nc".lineSequence(), channel)
             withTimeout(100) {
                 job.await()
             }
         }
 
+        "load".config(timeout = Duration.ofMillis(100)) {
+            val filePath = "test.dawg"
+            val trie1 = TrieFactory.newTrie("a\nb\nc".lineSequence(), filePath = filePath)
+            val trie2 = TrieFactory.newTrieFromFile(filePath)
+            for (c in arrayOf("a","b","c")) {
+                trie1.contains(c) shouldBe trie2.contains(c)
+            }
+        }
+
         "contains" {
             // sorted
-            trie.build(content_countries.lineSequence())
+            val trie = TrieFactory.newTrie(content_countries.lineSequence())
             trie.contains("Vietnam") shouldBe true
             trie.contains("Cambodia") shouldBe true
             trie.contains("Thailand") shouldBe true
@@ -43,7 +51,7 @@ class TrieTests: StringSpec() {
         }
 
         "find" {
-            trie.build(content.lineSequence())
+            val trie = TrieFactory.newTrie(content.lineSequence())
             for(prefix in arrayOf("a", "b", "c")) {
                 trie.search(prefix).let {
                     it.shouldContainKey(prefix)
@@ -53,7 +61,7 @@ class TrieTests: StringSpec() {
         }
 
         "find2" {
-            trie.build(content_countries.lineSequence())
+            val trie = TrieFactory.newTrie(content_countries.lineSequence())
             trie.search("V").let {
                 it.shouldContainKey("Vietnam")
                 it.entries.forAll(mapEntryValueShouldBe0)
@@ -63,7 +71,7 @@ class TrieTests: StringSpec() {
     }
 
     override fun beforeTest(testCase: TestCase) {
-        trie = TrieFactory.newTrie()
+        //trie = TrieFactory.newTrie("a\nb\nc".lineSequence(), channel)
     }
 
     companion object {
@@ -82,8 +90,4 @@ class TrieTests: StringSpec() {
             it.value shouldBe 0
         }
     }
-}
-
-private fun String.wordSequence(): WordSequence {
-    return WordSequence.new(this)
 }

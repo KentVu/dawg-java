@@ -12,8 +12,7 @@ import org.junit.runner.RunWith
 class DawgAndroidTest {
     @Test
     fun buildDawg() = runBlocking {
-        val trie = TrieFactory.newTrie()
-        trie.build("a\nb\nc".lineSequence())
+        val trie = TrieFactory.newTrie("a\nb\nc".lineSequence(), filePath = null)
         assertTrue(trie.contains("a"))
     }
 }

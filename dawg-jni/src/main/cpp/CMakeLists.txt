@@ -4,6 +4,7 @@
 # your build.
 
 cmake_minimum_required(VERSION 3.4.1)
+project(DawgAndroid)
 
 # Specifies a library name, specifies whether the library is STATIC or
 # SHARED, and provides relative paths to the source code. You can
