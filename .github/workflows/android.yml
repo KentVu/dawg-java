@@ -17,26 +17,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Cache SWIG build
-      id: cache-swig
-      uses: actions/cache@v1
-      with:
-        path: swig/dist
-        key: ${{ runner.os }}-swig
 
-    - name: Checkout SWIG
-      if: steps.cache-swig.outputs.cache-hit != 'true'
-      uses: actions/checkout@v2
-      with:
-        repository: swig/swig
-        path: swig
-    - name: Install SWIG from source
-      if: steps.cache-swig.outputs.cache-hit != 'true'
-      run: |
-        ./build_swig.sh -d
     - name: Build with Gradle & SWIG
       run: |
-        export PATH=$PWD/swig/dist/bin:$PATH
         gpg --batch --yes --decrypt --passphrase="$GPG_PASS" \
           --output key.asc .github/key.asc.gpg
         echo signing.keyId=716EB882 >> gradle.properties
@@ -72,7 +55,7 @@ jobs:
         #path: ${{ env.HOME }}/.m2/repository/kentvu/dawgjava/dawg-java/
 
   android-test:
-    runs-on: macOS-latest
+    runs-on: macos-10.15 # macos-11.0 is not public for now
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -85,6 +68,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          emulator-build: 6110076
           script: ./gradlew :dawg-android:assemble connectedCheck
 
       - name: Persist test result
