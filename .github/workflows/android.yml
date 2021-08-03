@@ -26,7 +26,7 @@ jobs:
         echo signing.password="$SIGNING_PASSWORD" >> gradle.properties
         # PWD is ./dawg-java/
         echo signing.secretKeyRingFile=../key.asc >> gradle.properties
-        ./gradlew --info build :dawg-java:publishGprPublicationToMavenLocal
+        ./gradlew --info clean build :dawg-java:publishGprPublicationToMavenLocal
         mkdir -pv repository/
         cp -rv ~/.m2/repository/kentvu repository || true
     - name: Upload test reports
@@ -69,7 +69,7 @@ jobs:
         with:
           api-level: 29
           emulator-build: 6110076
-          script: ./gradlew :dawg-android:assemble connectedCheck
+          script: ./gradlew clean :dawg-android:assemble connectedCheck
 
       - name: Persist test result
         uses: actions/upload-artifact@v1.0.0
