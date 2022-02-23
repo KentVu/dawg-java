@@ -21,6 +21,9 @@ library {
         def osFamily = binary.targetPlatform.targetMachine.operatingSystemFamily
         if (osFamily.macOs) {
             compileTask.includes.from("${Jvm.current().javaHome}/include/darwin")
+            //compileTask.includes.from("${System.properties['user.home']}/Library/Android/sdk//ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/")
+            compileTask.includes.from("/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home/include")
+            compileTask.includes.from("/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home/include/darwin")
         } else if (osFamily.linux) {
             compileTask.includes.from("${Jvm.current().javaHome}/include/linux")
         } else if (osFamily.windows) {
